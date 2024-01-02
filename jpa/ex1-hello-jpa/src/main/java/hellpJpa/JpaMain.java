@@ -15,11 +15,28 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member = new Member();
-            member.setUsername("A");
-            member.setRoleType(RoleType.USER);
+//            Member member = new Member();
+//            member.setUsername("A");
+//            member.setRoleType(RoleType.USER);
+//
+//            em.persist(member);
+            //저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
-            em.persist(member);
+            Human human = new Human();
+            human.setName("human1");
+            human.setTeam(team);
+            em.persist(human);
+
+            Human findHuman = em.find(Human.class, human.getId());
+            List<Human> humans = findHuman.getTeam().getHumans();
+
+            for (Human h : humans) {
+                System.out.println(h.getName());
+            }
+
             tx.commit();
         }catch (Exception e) {
             tx.rollback();
